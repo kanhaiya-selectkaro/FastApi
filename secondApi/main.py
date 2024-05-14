@@ -67,3 +67,4 @@ async def read_items2(q: str | None = Query(default=None, max_length=50)):
         results.update({"q": q})
     return results
 
+
