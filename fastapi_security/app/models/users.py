@@ -6,7 +6,9 @@ from sqlalchemy.ext.validator import validates
 
 # Import for password hashing (replace with your chosen hashing library)
 from passlib.hash import bcrypt
+from passlib.context import CryptContext
 
+pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
 @as_declarative(mapper_class=Base)
 class User(Base):
@@ -33,10 +35,10 @@ class User(Base):
 
 
     def set_password(self, password):
-        self.hashed_password = bcrypt.hash(password)
+        self.hashed_password = pwd_context.hash(password)
 
     def verify_password(self, password):
-        return bcrypt.verify(password, self.hashed_password)
+        return pwd_context.verify(password, self.hashed_password)
 
 # Uncomment and call this line only once to create the tables in the database
 # user.Base.metadata.create_all(bind=engine) 
